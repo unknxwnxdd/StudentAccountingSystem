@@ -31,3 +31,8 @@ class StudentRegistry:
 
     def list_students(self) -> list[Student]:
         return list(self._students.values())
+
+    def filter_by_group(self, group: str) -> list[Student]:
+        """Повернути студентів вказаної групи (без урахування регістру)."""
+        group_key = group.strip().casefold()
+        return [s for s in self._students.values() if s.group.casefold() == group_key]

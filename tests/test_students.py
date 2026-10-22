@@ -22,6 +22,11 @@ class StudentRegistryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.registry.add_student(Student(3, "", "Петренко", "ІПЗ-31"))
 
+    def test_filter_students_by_group(self) -> None:
+        self.registry.add_student(self.olena)
+        self.registry.add_student(self.ivan)
+        self.assertEqual(self.registry.filter_by_group("іпз-31"), [self.olena])
+
 
 if __name__ == "__main__":
     unittest.main()
