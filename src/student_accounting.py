@@ -36,3 +36,10 @@ class StudentRegistry:
         """Повернути студентів вказаної групи (без урахування регістру)."""
         group_key = group.strip().casefold()
         return [s for s in self._students.values() if s.group.casefold() == group_key]
+
+    def search_by_surname(self, query: str) -> list[Student]:
+        """Пошук за частиною прізвища, без урахування регістру."""
+        query_key = query.strip().casefold()
+        if not query_key:
+            return []
+        return [s for s in self._students.values() if query_key in s.last_name.casefold()]

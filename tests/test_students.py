@@ -27,6 +27,15 @@ class StudentRegistryTests(unittest.TestCase):
         self.registry.add_student(self.ivan)
         self.assertEqual(self.registry.filter_by_group("іпз-31"), [self.olena])
 
+    def test_search_by_surname(self) -> None:
+        self.registry.add_student(self.olena)
+        self.registry.add_student(self.ivan)
+        self.assertEqual(self.registry.search_by_surname("ПЕТР"), [self.olena])
+
+    def test_empty_search_returns_no_students(self) -> None:
+        self.registry.add_student(self.olena)
+        self.assertEqual(self.registry.search_by_surname("  "), [])
+
 
 if __name__ == "__main__":
     unittest.main()
