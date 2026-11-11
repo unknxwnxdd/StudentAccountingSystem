@@ -1,45 +1,32 @@
-"""Навчальна модель даних і сервіс обліку студентів без зовнішніх залежностей."""
-
 from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
 class Student:
-    student_id: int
-    first_name: str
     last_name: str
+    first_name: str
     group: str
 
 
 class StudentRegistry:
-    def __init__(self) -> None:
-        self._students: dict[int, Student] = {}
+    def __init__(self):
+        self._students = []
 
-    def add_student(self, student: Student) -> None:
-        if student.student_id <= 0:
-            raise ValueError("Student ID must be positive")
-        if not student.first_name.strip() or not student.last_name.strip():
-            raise ValueError("Student name is required")
+    def add(self, student):
+        if not student.last_name.strip():
+            raise ValueError("Last name is required")
         if not student.group.strip():
-            raise ValueError("Academic group is required")
-        if student.student_id in self._students:
-            raise ValueError("Student ID already exists")
-        self._students[student.student_id] = student
+            raise ValueError("Group is required")
+        self._students.append(student)
 
-    def get_student(self, student_id: int) -> Student | None:
-        return self._students.get(student_id)
+    def count(self):
+        return len(self._students)
 
-    def list_students(self) -> list[Student]:
-        return list(self._students.values())
+    def filter_by_group(self, group):
+        return [s for s in self._students if s.group == group]
 
-    def filter_by_group(self, group: str) -> list[Student]:
-        """Повернути студентів вказаної групи (без урахування регістру)."""
-        group_key = group.strip().casefold()
-        return [s for s in self._students.values() if s.group.casefold() == group_key]
-
-    def search_by_surname(self, query: str) -> list[Student]:
-        """Пошук за частиною прізвища, без урахування регістру."""
-        query_key = query.strip().casefold()
-        if not query_key:
-            return []
-        return [s for s in self._students.values() if query_key in s.last_name.casefold()]
+    def search_by_surname(self, surname):
+        query = surname.strip().lower()
+        if not query:
+            raise ValueError("Search text is required")
+        return [s for s in self._students if s.last_name.lower().startswith(query)]
