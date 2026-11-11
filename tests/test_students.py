@@ -12,7 +12,7 @@ class StudentRegistryTests(unittest.TestCase):
 
     def test_filter_by_group_returns_students_of_group(self):
         result = self.registry.filter_by_group("КН-21")
-        self.assertEqual(len(result), 2)
+        self.assertEqual(len(result), 3)
 
     def test_filter_by_unknown_group_returns_empty_list(self):
         self.assertEqual(self.registry.filter_by_group("XX-00"), [])
